@@ -15,7 +15,7 @@
 defined('ABSPATH') || exit;
 
 final class CIP_Plugin {
-    const VERSION = '1.0.1';
+    const VERSION = '1.3.9';
     const OPTION  = 'cip_settings';
 
     public function __construct() {
