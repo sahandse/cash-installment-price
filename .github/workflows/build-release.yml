@@ -1,0 +1,40 @@
+name: Build Plugin ZIP
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare plugin
+        run: |
+          mkdir -p build/cash-installment-price
+          rsync -av --exclude='.git' --exclude='.github' --exclude='build' ./ build/cash-installment-price/
+
+      - name: Create ZIP
+        run: |
+          cd build
+          zip -r cash-installment-price.zip cash-installment-price
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cash-installment-price
+          path: build/cash-installment-price.zip
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/cash-installment-price.zip
+          generate_release_notes: true
