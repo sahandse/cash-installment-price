@@ -3,7 +3,7 @@
  * Plugin Name: قیمت نقدی و اقساطی ووکامرس
  * Plugin URI: https://github.com/sahandse/cash-installment-price
  * Description: نمایش قیمت نقدی و اقساطی محصولات ووکامرس با امکان تنظیم درصد یا مبلغ ثابت افزایش قیمت.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Sahand Rezvan
  * Author URI: https://github.com/sahandse
  * Text Domain: cash-installment-price
@@ -15,7 +15,7 @@
 defined('ABSPATH') || exit;
 
 final class CIP_Plugin {
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
     const OPTION  = 'cip_settings';
 
     public function __construct() {
@@ -83,6 +83,10 @@ final class CIP_Plugin {
     }
 
     public function admin_menu() {
+        if (function_exists('s_store_register_submenu')) {
+            s_store_register_submenu('cash-installment-price', 'قیمت نقدی و اقساطی', [$this, 'settings_page'], 'manage_woocommerce', 'قیمت نقدی و اقساطی');
+            return;
+        }
         add_submenu_page(
             'woocommerce',
             'قیمت نقدی و اقساطی',
